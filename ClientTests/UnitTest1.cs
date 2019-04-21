@@ -21,6 +21,16 @@ namespace Tests
         }
 
         [Test]
+        public void ClickReceiveMessageShouldCallEncryptMessage()
+        {
+            // Arrange
+            _client.ReceiveMessage();
+
+            // Assert
+            A.CallTo(() => _messageEncrypter.EncryptMessage()).MustHaveHappened();
+        }
+        
+        [Test]
         public void ClickReceiveMessageShouldCallGetStringFromServer()
         {
             // Arrange
@@ -30,14 +40,5 @@ namespace Tests
             A.CallTo(() => _connectionService.GetString(A<string>.Ignored)).MustHaveHappened();
         }
 
-        [Test]
-        public void ClickReceiveMessageShouldCallEncryptMessage()
-        {
-            // Arrange
-            _client.ReceiveMessage();
-
-            // Assert
-            A.CallTo(() => _messageEncrypter.EncryptMessage()).MustHaveHappened();
-        }
     }
 }
