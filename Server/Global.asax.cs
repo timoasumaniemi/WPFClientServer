@@ -11,6 +11,7 @@ namespace Server
     {
         protected void Application_Start()
         {
+            MefConfig.RegisterMef();
             GlobalConfiguration.Configure(WebApiConfig.Register);
         }
     }

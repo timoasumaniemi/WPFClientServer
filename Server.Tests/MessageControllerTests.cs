@@ -1,5 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using FakeItEasy;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Server.Controllers;
+using Server.Utils;
 using System.Linq;
 
 namespace Server.Tests
@@ -8,17 +10,35 @@ namespace Server.Tests
     public class UnitTest1
     {
         [TestMethod]
-        public void GetShouldReturnDefaultMessage()
+        public void GetShouldCallMessageServiceGetNewMessage()
         {
             // Arrange
-            var messageController = new MessageController();
+            var messageRandomizer = A.Fake<IMessageRandomizer>();
+            var messageController = new MessageController(messageRandomizer);
 
             // Act
-            var actualMessage = messageController.Get();
+            messageController.Get();
 
             // Assert
-            Assert.AreEqual(actualMessage.First(), "default message");
-            
+            A.CallTo(() => messageRandomizer.GetNewMessage()).MustHaveHappened();
+        }
+
+        [TestMethod]
+        public void GetShouldReturnMessageFromRandomizer()
+        {
+            // Arrange
+            var messageRandomizer = A.Fake<IMessageRandomizer>();
+            var expectedMessage = "testString";
+
+            A.CallTo(() => messageRandomizer.GetNewMessage()).Returns(expectedMessage);
+
+            var messageController = new MessageController(messageRandomizer);
+
+            // Act
+            var actualMessage = messageController.Get().First();
+
+            // Assert
+            Assert.AreEqual(actualMessage, expectedMessage);
         }
     }
 }

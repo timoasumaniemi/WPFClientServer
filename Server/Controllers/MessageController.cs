@@ -1,6 +1,8 @@
 ﻿using Server.Models;
+using Server.Utils;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -8,22 +10,31 @@ using System.Web.Http;
 
 namespace Server.Controllers
 {
+    [Export]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public class MessageController : ApiController
     {
-        private Message _message = new Message { Content = "default message" };
+        private IMessageRandomizer _messageRandomizer;
 
-        public string Message => _message.Content;
+
+        [ImportingConstructor]
+        public MessageController(IMessageRandomizer messageRandomizer) : base()
+        {
+            _messageRandomizer = messageRandomizer;
+        }
 
         // GET: api/Message
         public IEnumerable<string> Get()
         {
-            return new string[] { Message };
+            var messageToReturn = _messageRandomizer.GetNewMessage();
+
+            return new string[] { messageToReturn };
         }
 
         // GET: api/Message/5
         public string Get(int id)
         {
-            return Message;
+            return _messageRandomizer.GetNewMessage();
         }
 
         // POST: api/Message
