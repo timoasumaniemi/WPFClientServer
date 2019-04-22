@@ -7,23 +7,33 @@
 <body>
     <h1>Server API - Test page</h1>
     <div>
-        <p id="message"></p>
+        <p id="message">test</p>
     </div>
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
     <script>
-        var uri = 'api/message';
+        var uri = 'sendmessage';
 
         $(document).ready(function () {
 
             // Get the message from server
-            $.getJSON(uri)
+            $.getJSON('/api/message')
                 .done(function (data) {
-
                     $.each(data, function (key, item) {
                         console.log(item);
                         $('#message').text(item);
                     })
                 });
+
+            // Send
+            $.ajax({
+                type: 'POST',
+                url: uri,
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                data: '=message_here',
+                success: function(msg){
+                    alert( msg);
+                }
+            });
         });
 
     </script>

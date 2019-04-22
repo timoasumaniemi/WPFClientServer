@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Client.UI;
+using System;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
 
 namespace Client
 {
@@ -20,8 +11,30 @@ namespace Client
     /// </summary>
     public partial class MainWindow : Window
     {
+        private CompositionContainer _container;
+
+        [Import]
+        private ExportFactory<IWpfClient> WpfClientFactory { get; set; }
+
         public MainWindow()
         {
+            // Init MEF
+            var catalog = new AggregateCatalog();
+            catalog.Catalogs.Add(new AssemblyCatalog(typeof(WpfClient).Assembly));
+            _container = new CompositionContainer(catalog);
+
+            try
+            {
+                this._container.ComposeParts(this);
+            }
+            catch(CompositionException ex)
+            {
+                Console.Write($"Composing error: {ex.Message}");
+            }
+
+            var wpfClient = WpfClientFactory.CreateExport().Value;
+
+            base.DataContext = wpfClient;
             InitializeComponent();
         }
     }

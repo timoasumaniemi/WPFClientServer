@@ -1,11 +1,8 @@
-﻿using Server.Models;
+﻿
 using Server.Utils;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace Server.Controllers
@@ -23,7 +20,9 @@ namespace Server.Controllers
             _messageRandomizer = messageRandomizer;
         }
 
-        // GET: api/Message
+        // GET: api/message
+        [Route("api/message")]
+        [HttpGet]
         public IEnumerable<string> Get()
         {
             var messageToReturn = _messageRandomizer.GetNewMessage();
@@ -31,25 +30,14 @@ namespace Server.Controllers
             return new string[] { messageToReturn };
         }
 
-        // GET: api/Message/5
-        public string Get(int id)
-        {
-            return _messageRandomizer.GetNewMessage();
-        }
 
-        // POST: api/Message
-        public void Post([FromBody]string value)
+        // POST: sendmessage
+        [Route("sendmessage")]
+        [HttpPost]
+        public IHttpActionResult Post([FromBody] string message)
         {
-        }
-
-        // PUT: api/Message/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE: api/Message/5
-        public void Delete(int id)
-        {
+            //TODO: Implement message encryption check, if ok return it, if not ok return error code
+            return Content(HttpStatusCode.OK, message);
         }
     }
 }

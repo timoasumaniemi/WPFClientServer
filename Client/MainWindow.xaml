@@ -4,9 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client"
+        xmlns:ui="clr-namespace:Client.UI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+        d:DataContext="{d:DesignInstance ui:WpfClient, IsDesignTimeCreatable=False}">
+
     <Grid>
-        <Button x:Name="send_messages" BorderBrush="#FF0E8195" BorderThickness="5" Width="100" Margin="224,117,469.333,264.667">Send Message</Button>
+        <TextBlock Text="{Binding Status}"></TextBlock>
+        <Button Command="{Binding ReceiveMessage}" x:Name="receive_message" BorderBrush="#FF0E8195" BorderThickness="5" Margin="161,160,506.333,140.667">Receive Message</Button>
     </Grid>
 </Window>
