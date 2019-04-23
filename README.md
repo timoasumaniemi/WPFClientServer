@@ -3,7 +3,8 @@
 Simple application to demonstrate client-server implementation using C#.
 Client will be done with WPF and server with C# .NET ASP Web API 2
 
-WPFClientServer solution was done with Visual Studio 2019. .NET Framework 4.7.2 version was used
+WPFClientServer solution was done with Visual Studio 2019. .NET Framework 4.7.2 version was used.
+
 Solution contains 4 projects:
 - Client: WPF Client, a simple GUI with one button - "Receive Message". By clicking it, a string message is received from API server, then encrypted using BCRYPT method and this encrypted message is then sent back to server. Currently server will response by returning this encyrpted message undomdified with OK statusresponse. 
 - ClientTests: Unit tests related to the WPF Client
